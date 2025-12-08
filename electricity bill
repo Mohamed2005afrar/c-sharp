@@ -13,7 +13,6 @@ class Program
         {
             Console.WriteLine();
             Console.WriteLine($"Processing Consumer {i}");
-            Console.WriteLine("-------------------------");
             Console.Write("Consumer ID: ");
             string id = Console.ReadLine();
             Console.Write("Units Consumed: ");
@@ -69,6 +68,5 @@ class Program
         Console.WriteLine($"Highest Bill    : {highestBillConsumer} → ₹ {highestBill:F2}");
         Console.WriteLine($"Domestic        : {domesticCount}");
         Console.WriteLine($"Commercial      : {commercialCount}");
-        Console.WriteLine("=============================");
     }
 }
