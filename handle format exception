@@ -1,0 +1,83 @@
+using System;
+using System.Text.RegularExpressions;
+public class NegativeNumberException : Exception
+{
+    public NegativeNumberException(string message) : base(message)
+    {
+    }
+}
+public class Person
+{
+    private string firstName;
+    private string lastName;
+    public string FirstName
+    {
+        get { return firstName; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+            {
+                throw new ArgumentException("FirstName must contain only alphabets and cannot be empty.");
+            }
+            firstName = value;
+        }
+    }
+    public string LastName
+    {
+        get { return lastName; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value) || !Regex.IsMatch(value, @"^[A-Za-z]+$"))
+            {
+                throw new ArgumentException("LastName must contain only alphabets and cannot be empty.");
+            }
+            lastName = value;
+        }
+    }
+    public int[] Marks { get; set; } = new int[3];
+}
+
+class Program
+{
+    static void Main()
+    {
+        Person student = new Person();
+        try
+        {
+            Console.Write("Enter First Name: ");
+            student.FirstName = Console.ReadLine();
+            Console.Write("Enter Last Name: ");
+            student.LastName = Console.ReadLine();
+            for (int i = 0; i < 3; i++)
+            {
+                Console.Write($"Enter marks for subject {i + 1}: ");
+                string input = Console.ReadLine();
+                try
+                {
+                    int mark = int.Parse(input);
+                    if (mark < 0)
+                    {
+                        throw new NegativeNumberException("Marks cannot be negative.");
+                    }
+                    student.Marks[i] = mark;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Invalid input! Please enter an integer value.");
+                    i--;
+                }
+                catch (NegativeNumberException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    i--;
+                }
+            }
+            Console.WriteLine($"Name: {student.FirstName} {student.LastName}");
+            Console.WriteLine("Marks: " + string.Join(", ", student.Marks));
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+}
